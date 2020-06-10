@@ -7,5 +7,14 @@ Dossier appli_sudoku :
 Version qui donne la fonctionnalité de pouvoir dessiner plusieurs chiffres en même temps, dans le but de réaliser un sudoku interactif
 
 Dossier reseau_Lcouches : 
-Répertorie tous les fichiers python qui ont servi à générer les paramètres du réseau de neurones exploité par l'application pour la reconnaissance des chiffres. 
--
+Répertorie tous les fichiers python qui ont servi à générer les paramètres du réseau de neurones exploité par l'application pour la reconnaissance des chiffres
+
+-L_Layers et L_layers_batch : scripts python de l'architecture de chaque réseau; L_layers étant codé pour entrainer un réseau sur l'ensemble des données d'entrainement; L_layers_batch étant codé pour entrainer un réseau sur des batchs des données
+
+-rezo et rezo_saved : scripts pyhton servant à entrainer chaque réseau et renvoyer en sortie les paramètres finaux ainsi que les caractéristiques des chaque réseau dans les fichiers "model"
+
+-model1, model3 et model_batch : fichiers python avec les caractéristiques de chaque réseau et les paramètres finaux. model1 et model3 sont les caractéristiques de 2 réseaux entrainés sur l'architecture L_layers; et model_batch regroupe les caractéristiques d'un réseau entrainé sur l'architecture L_layers_batch
+
+-reseau_saved : script python permettant de tester les modèles sauvegardés
+
+-les fichiers .png représentent l'évolution de la fonction de cout des modèles sauvegardés
