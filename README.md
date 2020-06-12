@@ -18,3 +18,16 @@ Répertorie tous les fichiers python qui ont servi à générer les paramètres 
 -reseau_saved : script python permettant de tester les modèles sauvegardés
 
 -les fichiers .png représentent l'évolution de la fonction de cout des modèles sauvegardés
+
+Dossier reseau_keras : 
+Répertorie tous les fichiers python qui ont permis de générer les paramètres du réseau de neurones avec keras
+
+-train_evaluate : script pyhton qui permet de créer un réseau de neurones, de l'entrainer et de l'exporter (il permet de créer le fichier path_to_my_model2.h5 qui contient les paramètres du réseau en format .h5)
+
+-evaluate : script pyhton qui permet d'évaluer un réseau de neurones
+
+-converter : script pyhton qui permet de convertir un fichier .h5 en un fichier .tflite
+
+-tf_lite_model_float.tflite et tf_lite_model_quant.tflite : fichiers qui permettent d'exploiter le réseau de neurones sur l'application
+
+-labels.txt : liste des labels, chiffres de 0 à 9
