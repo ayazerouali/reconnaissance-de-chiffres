@@ -22,11 +22,11 @@ Répertorie tous les fichiers python qui ont servi à générer les paramètres 
 Dossier reseau_keras : 
 Répertorie tous les fichiers python qui ont permis de générer les paramètres du réseau de neurones avec keras
 
--train_evaluate : script pyhton qui permet de créer un réseau de neurones, de l'entrainer et de l'exporter (il permet de créer le fichier path_to_my_model2.h5 qui contient les paramètres du réseau en format .h5)
+-train_evaluate : script python qui permet de créer un réseau de neurones, de l'entrainer et de l'exporter (il permet de créer le fichier path_to_my_model2.h5 qui contient les paramètres du réseau en format .h5)
 
--evaluate : script pyhton qui permet d'évaluer un réseau de neurones
+-evaluate : script python qui permet d'évaluer un réseau de neurones
 
--converter : script pyhton qui permet de convertir un fichier .h5 en un fichier .tflite
+-converter : script python qui permet de convertir un fichier .h5 en un fichier .tflite
 
 -tf_lite_model_float.tflite et tf_lite_model_quant.tflite : fichiers qui permettent d'exploiter le réseau de neurones sur l'application
 
