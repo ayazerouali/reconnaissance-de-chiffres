@@ -20,19 +20,29 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-
+/* cette classe calcule les resultats de la reconnaissance d image suite a l envoi d une image
+* depuis la classe MainActivity
+* elle cree un classifier qui est ensuite exploite par la classe Classifier
+* qui renvoie le resultat correctement interprete*/
 public class TensorFlowImageClassifier implements Classifier {
 
+    //autorise le nombre de resultats
     private static final int MAX_RESULTS = 1;
-    private static final int BATCH_SIZE = 1;
-    private static final int PIXEL_SIZE = 1;
+
+    //seuil de probas selon lequel on accepte un resultat
     private static final float THRESHOLD = 0;
 
     private static final int IMAGE_MEAN = 0;
     private static final float IMAGE_STD = 128.0f;
 
+    //l interpreter permet de faire les calculs avec les parametres du reseau de neurones
+    //c est l objet le plus important de la classe
     private Interpreter interpreter;
+
+    //taille de l image
     private int inputSize;
+
+    //liste des labels, ici ce sont les chiffres de 0 a 9
     private List<String> labelList;
     private boolean quant;
 
@@ -40,6 +50,7 @@ public class TensorFlowImageClassifier implements Classifier {
 
     }
 
+    //creation du classifier qui repertorie tous les resultats
     static Classifier create(AssetManager assetManager,
                              String modelPath,
                              String labelPath,
@@ -55,12 +66,17 @@ public class TensorFlowImageClassifier implements Classifier {
         return classifier;
     }
 
+
+    /* prend le bitmap a reconnaitre et renvoie la liste des resultats
+    * cette fonction utilise toutes les suivantes */
     @Override
     public List<Recognition> recognizeImage(Bitmap bitmap) {
         ByteBuffer byteBuffer = convertBitmapToByteBuffer(bitmap);
 
         if(quant){
             byte[][] result = new byte[1][labelList.size()];
+
+            //calcule l array de probalilites results
             interpreter.run(byteBuffer, result);
 
             System.out.println("result apres interpreter");
@@ -72,12 +88,14 @@ public class TensorFlowImageClassifier implements Classifier {
                 System.out.println(result[0][i]);
             }
 
+            //renvoie la liste des resultats
             System.out.println(getSortedResultByte(result));
 
             return getSortedResultByte(result);
         } else {
             float [][] result = new float[1][labelList.size()];
 
+            //calcule l array de probalilites results
             interpreter.run(byteBuffer, result);
 
             System.out.println("result apres interpreter");
@@ -89,6 +107,8 @@ public class TensorFlowImageClassifier implements Classifier {
             }
 
             System.out.println(getSortedResultFloat(result));
+
+            //renvoie la liste des resultats
             return getSortedResultFloat(result);
         }
 
@@ -100,6 +120,7 @@ public class TensorFlowImageClassifier implements Classifier {
         interpreter = null;
     }
 
+    //prend en entree le fichier des parametres et renvoie les parametres expoitables par l interpreter
     private MappedByteBuffer loadModelFile(AssetManager assetManager, String modelPath) throws IOException {
         AssetFileDescriptor fileDescriptor = assetManager.openFd(modelPath);
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
@@ -109,6 +130,7 @@ public class TensorFlowImageClassifier implements Classifier {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
+    //prend en entree le fichier des labels et renvoie la liste des labels
     private List<String> loadLabelList(AssetManager assetManager, String labelPath) throws IOException {
         List<String> labelList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(assetManager.open(labelPath)));
@@ -120,32 +142,31 @@ public class TensorFlowImageClassifier implements Classifier {
         return labelList;
     }
 
+    //convertit le bitmap en byteBuffer pour qu il soit exploitable par l interpreter
     private ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
         ByteBuffer byteBuffer;
 
         if(quant) {
-            byteBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE);
+            byteBuffer = ByteBuffer.allocateDirect(inputSize * inputSize);
         } else {
-            byteBuffer = ByteBuffer.allocateDirect(4 * BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE);
+            byteBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize);
         }
 
         byteBuffer.order(ByteOrder.nativeOrder());
         int[] intValues = new int[inputSize * inputSize];
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
         int pixel = 0;
-        //System.out.println("on est au buffer");
+
         for (int i = 0; i < inputSize; ++i) {
             for (int j = 0; j < inputSize; ++j) {
                 final int val = intValues[pixel++];
-                //System.out.println(val);
+
                 if(quant){
                     byteBuffer.put((byte) ((val >> 16) & 0xFF));
                     byteBuffer.put((byte) ((val >> 8) & 0xFF));
                     byteBuffer.put((byte) (val & 0xFF));
                 } else {
-                    //byteBuffer.putFloat((((val >> 16) & 0xFF)-IMAGE_MEAN)/IMAGE_STD);
                     byteBuffer.putFloat((((val >> 8) & 0xFF)-IMAGE_MEAN)/IMAGE_STD);
-                    //byteBuffer.putFloat((((val) & 0xFF)-IMAGE_MEAN)/IMAGE_STD);
                 }
 
             }
@@ -153,6 +174,9 @@ public class TensorFlowImageClassifier implements Classifier {
         return byteBuffer;
     }
 
+    /* les deux fonctions suivantes en fonction de si le fichier est QUANT fonct la meme chose
+    * elles prennent en entree l array de probas de l image qui doit etre reconnue
+    * elles renvoient le label associe a l image*/
     @SuppressLint("DefaultLocale")
     private List<Recognition> getSortedResultByte(byte[][] labelProbArray) {
 

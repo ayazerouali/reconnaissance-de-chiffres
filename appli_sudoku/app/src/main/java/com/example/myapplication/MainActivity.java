@@ -60,13 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.save_button:
 
-                //Bitmap bitmap = resizeImage.getBitmap2();
                 Bitmap bitmap1 = resizeImage.resize(separeBitmap.getBitmap1());
                 Bitmap bitmap2 = resizeImage.resize(separeBitmap.getBitmap2());
                 Bitmap bitmap3 = resizeImage.resize(separeBitmap.getBitmap3());
                 Bitmap bitmap4 = resizeImage.resize(separeBitmap.getBitmap4());
 
-                //imageViewResult.setImageBitmap(drawingview.getBitmap());
                 imageViewResult.setImageBitmap(bitmap1);
 
                 final List<Classifier.Recognition> results1 = classifier.recognizeImage(bitmap1);

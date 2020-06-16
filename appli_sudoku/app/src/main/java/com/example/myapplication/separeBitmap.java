@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import android.graphics.Bitmap;
 
+/*separe le bitmap de depart en 4 bitmaps
+* chaque bitmap contient un chiffre et sera reconnu par l interpreter*/
 public class separeBitmap {
 
     private static Bitmap bitmap1;

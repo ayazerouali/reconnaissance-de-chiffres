@@ -12,7 +12,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+//cette classe met en place l interface graphique et le dessin a partir de l ecran tactile
 public class drawingview extends View {
+    //on definit les objets necessaires
     private static final float TOUCH_TOLERANCE = 4;
     private static Bitmap bitmap;
     private Canvas canvas;
@@ -21,6 +23,8 @@ public class drawingview extends View {
     private Paint paint;
     private boolean drawMode;
     private float x, y;
+
+    //taille du stylo -- important pour l appli
     private float penSize = 80;
 
 
@@ -37,7 +41,7 @@ public class drawingview extends View {
         init();
     }
 
-
+    //on initialise les objets
     private void init() {
         path = new Path();
         bitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -53,6 +57,7 @@ public class drawingview extends View {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
     }
 
+    //on cree le bitmap qui va etre recupere par la suite
     @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (bitmap == null) {
@@ -98,6 +103,7 @@ public class drawingview extends View {
         }
     }
 
+    //utilise les fonctions touchStart touchMove er touchUp pour permettre le dessin sur l ecran tactile
     @Override public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
@@ -131,21 +137,15 @@ public class drawingview extends View {
         return true;
     }
 
-
+    //remet le bitmap vierge
     public void clear() {
         canvas.drawColor(Color.BLACK);
         invalidate();
     }
 
+    //recupere le bitmap
     public static Bitmap getBitmap() {
         return bitmap;
     }
 
-
-    public void loadImage(Bitmap bitmap) {
-        this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        canvas.setBitmap(this.bitmap);
-        bitmap.recycle();
-        invalidate();
-    }
 }

@@ -1,8 +1,12 @@
-import model_batch as model
-import rezo as r
 
+#choix du modele a importer
+import model_batch as model
+
+#importation des fichiers python qui permettent de realiser des operations 
+import rezo as r
 import L_layers as L
 
+#importation de la base de donnees et des librairies python
 from keras.datasets import mnist
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,8 +37,11 @@ Y_train = np_utils.to_categorical(y_train, K)
 # vecteur de 10000 elements qui sont les labels de X_train
 Y_test = np_utils.to_categorical(y_test, K)
 
+# chargement des parametres du modele choisi
 parameters = model.parameters
 
+#a completer : realiser les operation que l on souhaite, ici on affiche 9 images
+#et on imprime la precision du reseau sur le set de donnees test
 r.disp_plusieursImages(9,67, parameters)
 print(r.accuracy(X_test.T, Y_test, parameters))
-print((L.L_model_forward(X_test.T, parameters)[0]).T.shape)
+

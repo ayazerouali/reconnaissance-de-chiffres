@@ -4,7 +4,8 @@ import android.graphics.Bitmap;
 
 import java.util.List;
 
-
+/* un classifier est une liste qui contient les resultats de la reconnaissance d images
+* ici on decide d afficher seulement le chiffre reconnu : "c est le chiffre 7" par exemple */
 public interface Classifier {
 
     class Recognition {
@@ -37,13 +38,6 @@ public interface Classifier {
             this.quant = quant;
         }
 
-        public String getId() {
-            return id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
 
         public Float getConfidence() {
             return confidence;
@@ -52,17 +46,10 @@ public interface Classifier {
         @Override
         public String toString() {
             String resultString = "c'est le chiffre ";
-            //if (id != null) {
-            //    resultString += "[" + id + "] ";
-            //}
 
             if (title != null) {
                 resultString += title + " ";
             }
-
-            //if (confidence != null) {
-            //    resultString += String.format("(%.1f%%) ", confidence * 6.5f);
-            //}
 
             return resultString.trim();
         }

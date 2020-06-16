@@ -37,6 +37,8 @@ import sys
 sys.path.insert(0, "/Users/thomasb/Desktop/CS_2A/projet_2A/apprentissage")
 import L_layers as L
 
+
+#ici on va entrainer un modele sur 2000 images et le tester sur 10000 images
 X = X_train[0:2000,:].T
 Y = Y_train[0:2000,:].T
 images = X_test.T
@@ -46,6 +48,12 @@ layers_dim = [784,20,10]
 #print(L.L_layer_model(X,Y,layers_dim,0.1,3000, True)) # ca a l air de marcher
 
 def prediction(i, parameters):
+    '''
+    fonction qui predit le label d'une image
+    prend en entree le numero de l image a reconnaitre et les parametres du modele
+    renvoie la liste [nombre reconnu, sa probabilite en %]
+    '''
+
     probas = L.L_model_forward(np.array([X_test[i]]).T, parameters)[0]
     nombre = [- np.Inf,None]
     for i in range (0,len(probas)):
@@ -55,6 +63,15 @@ def prediction(i, parameters):
     return nombre
 
 def disp_plusieursImages(nb, start, parameters):
+
+    '''
+    fonction qui reconnait plusieurs images et affiche l'image avec en titre son label
+    entree :
+    nb -- le nombre d image (c est mieux si c est un multiple de 3)
+    start -- le numero d image sur lequel on commence
+    parameters -- les parametres du modele
+    
+    '''
 
     for i in range(nb):
         plt.subplot(3,nb/3,i+1)

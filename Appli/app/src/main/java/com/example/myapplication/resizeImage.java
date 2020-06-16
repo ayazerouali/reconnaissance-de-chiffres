@@ -2,6 +2,13 @@ package com.example.myapplication;
 
 import android.graphics.Bitmap;
 
+
+/* redimensionne l image pour optimiser la reconnaissance
+* le but est de faire rentrer le chiffre dans un carre de 16x17 pixels
+* on recupere les 4pixels extremes haut, bas, droite, gauche
+* un pixel extreme a droite est le pixel blanc le plus a droite
+* un pixel extreme en haut est le pixel blanc le plus en haut
+* etc*/
 public class resizeImage {
     static int haut = 0;
     static int bas = 0;
@@ -13,6 +20,7 @@ public class resizeImage {
     static int LARGE = 28;
     static int HAUTE = 49;
 
+    //on recupere le bitmap sur lequel est dessine le chiffre
     public static Bitmap prendBitmap(){
         Bitmap bitmap2 = drawingview.getBitmap();
         Bitmap bitmap = Bitmap.createScaledBitmap(bitmap2, LARGE, HAUTE,false);
@@ -20,6 +28,7 @@ public class resizeImage {
         return bitmap;
     }
 
+    //les quatre fonctions suivantes recuperent les 4 pixels extremes du bitmap sur lequel est dessine le chiffre
     public static int bas(int hauteur,int largeur){
         for (int i = 0; i<hauteur-1; ++i){
             for (int j = 0; j<largeur-1; ++j){
@@ -76,6 +85,9 @@ public class resizeImage {
         return gauche;
     }
 
+    /*cette fonction renvoie le bitmap final dans les bonnes dimensions
+    * le chiffre rentre dans un carre de 16x17 pixels
+    * ce carre est centre dans un bitmap de 28x28 pixels */
     public static Bitmap getBitmap2(){
         int hauteur = prendBitmap().getHeight();
         int largeur = prendBitmap().getWidth();
